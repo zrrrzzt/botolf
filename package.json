@@ -27,7 +27,6 @@
   },
   "scripts": {
     "start": "node index.js",
-    "now-start": "APP_ID=@botolf-app-id APP_SECRET=@botolf-app-secret node index.js",
     "test": "standard && nsp check && tap --reporter=spec test/**/*.js",
     "coverage": "tap test/**/*.js --coverage",
     "coveralls": "tap --cov --coverage-report=lcov test/**/*.js && cat coverage/lcov.info | coveralls"
