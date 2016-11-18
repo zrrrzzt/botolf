@@ -6,6 +6,8 @@ const cookies = require('fortune-cookie')
 const brreg = require('brreg')
 const config = require('./config')
 const getRandom = require('./lib/get-random')
+const getAnsatt = require('./lib/get-ansatt')
+const getPolitiker = require('./lib/get-politiker')
 
 // Setup Restify Server
 const server = restify.createServer()
@@ -30,14 +32,16 @@ bot.dialog('/', intents)
 
 intents.matches(/^brreg/i, [
   function (session) {
-    builder.Prompts.text(session, "Hva skal jeg søke etter i Brønnøysund?")
+    builder.Prompts.text(session, 'Hva skal jeg søke etter i Brønnøysund?')
   },
   function (session, results) {
     session.send(`Søker etter ${results.response}`)
     brreg({query: results.response})
       .then((data) => {
         session.send(`${data.entries.length} treff`)
-        session.send(JSON.stringify(data.entries))
+        data.entries.forEach((entry) => {
+          session.send(JSON.stringify(entry))
+        })
       })
       .catch((error) => {
         console.error(error)
@@ -46,6 +50,66 @@ intents.matches(/^brreg/i, [
   }
 ])
 
+intents.matches(/^(ansatt|ansatte)/i, [
+  function (session) {
+    builder.Prompts.text(session, 'Hvilken ansatt skal jeg finne?')
+  },
+  function (session, results) {
+    session.send(`Søker etter ${results.response}`)
+    getAnsatt(results.response, (error, data) => {
+      if (error) {
+        console.error(error)
+        session.send('Noe gikk galt. Beklager')
+      } else {
+        session.send(`${data.length} treff`)
+        data.forEach((entry) => {
+          session.send(JSON.stringify(entry))
+        })
+      }
+      const options = {
+        url: 'http://apps.t-fk.no/ansatte/',
+        text: 'Søk ansatte på nettsiden'
+      }
+      const buttonCard = createHeroCardButton(session, options)
+      const msg = new builder.Message(session).addAttachment(buttonCard)
+      session.send(msg)
+    })
+  }
+])
+
+intents.matches(/^(politiker|politikere)/i, [
+  function (session) {
+    builder.Prompts.text(session, 'Hvilken politiker skal jeg finne?')
+  },
+  function (session, results) {
+    session.send(`Søker etter ${results.response}`)
+    getPolitiker(results.response, (error, data) => {
+      if (error) {
+        console.error(error)
+        session.send('Noe gikk galt. Beklager')
+      } else {
+        session.send(`${data.length} treff`)
+        data.forEach((entry) => {
+          session.send(JSON.stringify(entry))
+        })
+      }
+      const options = {
+        url: 'https://politikerservice.t-fk.no/',
+        text: 'Søk politikere på nettsiden'
+      }
+      const buttonCard = createHeroCardButton(session, options)
+      const msg = new builder.Message(session).addAttachment(buttonCard)
+      session.send(msg)
+    })
+  }
+])
+
 intents.onDefault((session) => {
   session.send(getRandom(cookies))
 })
+
+function createHeroCardButton (session, options) {
+  return new builder.HeroCard(session)
+    .title('Meny')
+    .buttons([builder.CardAction.openUrl(session, options.url, options.text)])
+}
