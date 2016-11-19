@@ -63,11 +63,12 @@ intents.matches(/^(ansatt|ansatte)/i, [
       } else {
         session.send(`${data.length} treff`)
         data.forEach((entry) => {
-          session.send(JSON.stringify(entry))
+          session.send(JSON.stringify(entry._source))
         })
       }
       const options = {
-        url: 'http://apps.t-fk.no/ansatte/',
+        title: 'Ansatte',
+        url: 'https://search.portalen.t-fk.no',
         text: 'Søk ansatte på nettsiden'
       }
       const buttonCard = createHeroCardButton(session, options)
@@ -94,7 +95,8 @@ intents.matches(/^(politiker|politikere)/i, [
         })
       }
       const options = {
-        url: 'https://politikerservice.t-fk.no/',
+        title: 'Politikere',
+        url: 'https://politikerservice.t-fk.no',
         text: 'Søk politikere på nettsiden'
       }
       const buttonCard = createHeroCardButton(session, options)
@@ -110,6 +112,6 @@ intents.onDefault((session) => {
 
 function createHeroCardButton (session, options) {
   return new builder.HeroCard(session)
-    .title('Meny')
+    .title(options.title)
     .buttons([builder.CardAction.openUrl(session, options.url, options.text)])
 }
