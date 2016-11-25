@@ -8,6 +8,11 @@ const config = require('./config')
 const getRandom = require('./lib/get-random')
 const getAnsatt = require('./lib/get-ansatt')
 const getPolitiker = require('./lib/get-politiker')
+const validStats = [
+  'minelev',
+  'skoleskyss',
+  'tilskudd'
+]
 
 // Setup Restify Server
 const server = restify.createServer()
@@ -29,6 +34,31 @@ server.post('/api/messages', connector.listen())
 // Dialogs
 
 bot.dialog('/', intents)
+
+intents.matches(/^stats/i, [
+  function (session) {
+    builder.Prompts.text(session, 'Hva skal jeg finne statistikk for?')
+  },
+  function (session, results) {
+    const stats = results.response.toString().toLocaleLowerCase()
+    session.send(`Leter opp statistikk for ${stats}`)
+
+    if (validStats.includes(stats)) {
+      const statsMethod = require(`./lib/get-stats-${stats}`)
+      statsMethod((error, data) => {
+        if (error) {
+          session.send('Beklager, noe gikk galt')
+        } else {
+          data.forEach((message) => {
+            session.send(message)
+          })
+        }
+      })
+    } else {
+      session.send(`Kunne ikke finne statistikk for ${stats}`)
+    }
+  }
+])
 
 intents.matches(/^brreg/i, [
   function (session) {
