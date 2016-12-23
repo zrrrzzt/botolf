@@ -6,6 +6,7 @@ const cookies = require('fortune-cookie')
 const brreg = require('brreg')
 const config = require('./config')
 const pkg = require('./package.json')
+const greetings = require('./config/greetings')
 const getRandom = require('./lib/get-random')
 const getAnsatt = require('./lib/get-ansatt')
 const getPolitiker = require('./lib/get-politiker')
@@ -37,9 +38,9 @@ server.post('/api/messages', connector.listen())
 
 bot.dialog('/', intents)
 
-intents.matches(/^hei|hallo|heisann/i, [
+intents.matches(/^hei|hallo|heisann|hepp/i, [
   function (session) {
-    session.send('Hallo min venn :-)')
+    session.send(getRandom(greetings))
     session.send(`Jeg er Botolf versjon ${pkg.version}`)
   }
 ])
