@@ -12,7 +12,8 @@ const getPolitiker = require('./lib/get-politiker')
 const validStats = [
   'minelev',
   'skoleskyss',
-  'tilskudd'
+  'tilskudd',
+  'timerspart',
 ]
 
 // Setup Restify Server
@@ -39,12 +40,11 @@ bot.dialog('/', intents)
 intents.matches(/^hei|hallo|heisann/i, [
   function (session) {
     session.send('Hallo min venn :-)')
-    session.send('Jeg er Botolf')
-    session.send(`For øyeblikket i versjon ${pkg.version}`)
+    session.send(`Jeg er Botolf versjon ${pkg.version}`)
   }
 ])
 
-intents.matches(/^stats/i, [
+intents.matches(/^stats|statistikk/i, [
   function (session) {
     builder.Prompts.text(session, 'Hva skal jeg finne statistikk for?')
   },
