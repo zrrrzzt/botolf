@@ -13,7 +13,7 @@ const validStats = [
   'minelev',
   'skoleskyss',
   'tilskudd',
-  'timerspart',
+  'timerspart'
 ]
 
 // Setup Restify Server
