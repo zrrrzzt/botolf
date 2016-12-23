@@ -1,18 +1,15 @@
 {
   "name": "botolf",
   "description": "my test of the botframework",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "author": {
     "name": "Geir Gåsodden",
     "email": "geir.gasodden@pythonia.no"
   },
   "license": "MIT",
   "keywords": [
-    "brreg",
-    "difi",
-    "enhetsregisteret",
-    "norwegian entity registry",
-    "Brønnøysundregistrene"
+    "bot",
+    "chatbot"
   ],
   "repository": {
     "type": "git",
