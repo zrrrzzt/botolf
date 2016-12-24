@@ -1,5 +1,6 @@
 'use strict'
 
+const fs = require('fs')
 const restify = require('restify')
 const builder = require('botbuilder')
 const cookies = require('fortune-cookie')
@@ -10,6 +11,8 @@ const greetings = require('./config/greetings')
 const getRandom = require('./lib/get-random')
 const getAnsatt = require('./lib/get-ansatt')
 const getPolitiker = require('./lib/get-politiker')
+const isJsFile = file => file.indexOf('.js') > -1
+const validStatus = fs.readdirSync('lib/plugins/status/').filter(isJsFile).map((file) => file.replace('.js', ''))
 const validStats = [
   'minelev',
   'skoleskyss',
@@ -67,6 +70,31 @@ intents.matches(/^stats|statistikk/i, [
       })
     } else {
       session.send(`Kunne ikke finne statistikk for ${stats}`)
+    }
+  }
+])
+
+intents.matches(/^status/i, [
+  function (session) {
+    builder.Prompts.text(session, 'Hva skal jeg sjekke status for?')
+  },
+  function (session, results) {
+    const status = results.response.toString().toLocaleLowerCase()
+    session.send(`Sjekker status for ${status}`)
+
+    if (validStatus.includes(status)) {
+      const statusMethod = require(`./lib/plugins/status/${status}`)
+      statusMethod((error, data) => {
+        if (error) {
+          session.send('Beklager, noe gikk galt')
+        } else {
+          data.forEach((message) => {
+            session.send(message)
+          })
+        }
+      })
+    } else {
+      session.send(`Kunne ikke finne status for ${status}`)
     }
   }
 ])
