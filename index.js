@@ -13,13 +13,7 @@ const getAnsatt = require('./lib/get-ansatt')
 const getPolitiker = require('./lib/get-politiker')
 const isJsFile = file => file.indexOf('.js') > -1
 const validStatus = fs.readdirSync('lib/plugins/status/').filter(isJsFile).map((file) => file.replace('.js', ''))
-const validStats = [
-  'minelev',
-  'skoleskyss',
-  'tilskudd',
-  'timerspart',
-  'queue'
-]
+const validStats = fs.readdirSync('lib/plugins/stats/').filter(isJsFile).map((file) => file.replace('.js', ''))
 
 // Setup Restify Server
 const server = restify.createServer()
@@ -58,7 +52,7 @@ intents.matches(/^stats|statistikk/i, [
     session.send(`Leter opp statistikk for ${stats}`)
 
     if (validStats.includes(stats)) {
-      const statsMethod = require(`./lib/get-stats-${stats}`)
+      const statsMethod = require(`./lib/plugins/stats/${stats}`)
       statsMethod((error, data) => {
         if (error) {
           session.send('Beklager, noe gikk galt')
