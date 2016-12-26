@@ -3,12 +3,10 @@
 const fs = require('fs')
 const restify = require('restify')
 const builder = require('botbuilder')
-const cookies = require('fortune-cookie')
 const brreg = require('brreg')
 const config = require('./config')
-const pkg = require('./package.json')
-const greetings = require('./config/greetings')
-const getRandom = require('./lib/get-random')
+const greeting = require('./lib/intents/greeting')
+const getCookie = require('./lib/intents/cookie')
 const getAnsatt = require('./lib/get-ansatt')
 const getPolitiker = require('./lib/get-politiker')
 const isJsFile = file => file.indexOf('.js') > -1
@@ -36,12 +34,7 @@ server.post('/api/messages', connector.listen())
 
 bot.dialog('/', intents)
 
-intents.matches(/^hei|hallo|heisann|hepp/i, [
-  function (session) {
-    session.send(getRandom(greetings))
-    session.send(`Jeg er Botolf versjon ${pkg.version}`)
-  }
-])
+intents.matches(greeting.intent, greeting.actions)
 
 intents.matches(/^stats|statistikk/i, [
   function (session) {
@@ -169,9 +162,7 @@ intents.matches(/^(politiker|politikere)/i, [
   }
 ])
 
-intents.onDefault((session) => {
-  session.send(getRandom(cookies))
-})
+intents.onDefault(getCookie)
 
 function createHeroCardButton (session, options) {
   return new builder.HeroCard(session)
