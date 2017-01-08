@@ -1,5 +1,6 @@
 'use strict'
-
+process.env.APP_ID = 'abe69286-e067-420a-933e-38ab4876fd1c'
+process.env.APP_SECRET = 'iYfCBcgBVRS9JOaSC5YzqHY'
 module.exports = {
   APP_ID: process.env.APP_ID || 'your-app-id',
   APP_SECRET: process.env.APP_SECRET || 'your-app-password',
