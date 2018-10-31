@@ -45,6 +45,6 @@
     "fortune-cookie": "0.0.1",
     "got": "9.2.2",
     "restify": "7.2.1",
-    "wreck": "14.1.0"
+    "wreck": "14.1.1"
   }
 }
