@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "botbuilder": "4.5.0",
-    "brreg": "3.0.1",
+    "brreg": "4.0.1",
     "fortune-cookie": "0.0.1",
     "got": "9.6.0",
     "restify": "8.3.3",
