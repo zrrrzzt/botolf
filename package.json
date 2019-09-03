@@ -37,7 +37,7 @@
     "coveralls": "3.0.6",
     "nsp": "3.2.1",
     "standard": "13.1.0",
-    "tap": "14.4.2"
+    "tap": "14.6.1"
   },
   "dependencies": {
     "botbuilder": "4.5.3",
