@@ -44,7 +44,7 @@
     "brreg": "4.0.1",
     "fortune-cookie": "0.0.1",
     "got": "9.6.0",
-    "restify": "8.4.1",
+    "restify": "8.5.0",
     "wreck": "14.2.0"
   }
 }
