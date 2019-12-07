@@ -43,7 +43,7 @@
     "botbuilder": "4.6.2",
     "brreg": "4.0.1",
     "fortune-cookie": "0.0.1",
-    "got": "10.0.1",
+    "got": "10.0.2",
     "restify": "8.5.0",
     "wreck": "14.2.0"
   }
