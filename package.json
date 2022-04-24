@@ -40,7 +40,7 @@
     "tap": "15.1.6"
   },
   "dependencies": {
-    "botbuilder": "4.15.0",
+    "botbuilder": "4.16.0",
     "brreg": "5.0.6",
     "fortune-cookie": "0.0.1",
     "got": "11.8.3",
